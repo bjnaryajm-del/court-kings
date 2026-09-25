@@ -1,0 +1,212 @@
+
+<div id="app">
+ 
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">COURT <span>KINGS</span></span>
+    </div>
+    <div class="topbar-right hidden" id="topbar-user">
+      <span>🪙 <span class="coin" id="topbar-coins">0</span></span>
+      <span id="topbar-record">0-0</span>
+      <button class="linklike" id="btn-logout">Log out</button>
+    </div>
+  </header>
+ 
+  <main>
+ 
+    <!-- ============ AUTH SCREEN ============ -->
+    <section id="screen-auth">
+      <div class="auth-wrap">
+        <span class="brand-mark">COURT <span>KINGS</span></span>
+        <span class="brand-sub">Roll your dynasty, one player at a time.</span>
+ 
+        <div id="auth-message"></div>
+ 
+        <form id="form-login">
+          <div class="field">
+            <label for="login-username">Coach name</label>
+            <input id="login-username" autocomplete="username" required maxlength="24">
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-login">Log in</button>
+        </form>
+ 
+        <form id="form-register" class="hidden">
+          <div class="field">
+            <label for="reg-username">Choose a coach name</label>
+            <input id="reg-username" autocomplete="username" required maxlength="24" minlength="3">
+          </div>
+          <div class="field">
+            <label for="reg-password">Choose a password</label>
+            <input id="reg-password" type="password" autocomplete="new-password" required minlength="4">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-register">Create account</button>
+        </form>
+ 
+        <div class="auth-toggle">
+          <span id="auth-toggle-text">New here?</span>
+          <button type="button" id="btn-toggle-auth">Create an account</button>
+        </div>
+ 
+        <div class="auth-note" id="auth-note"></div>
+      </div>
+    </section>
+ 
+    <!-- ============ HOME / DASHBOARD ============ -->
+    <section id="screen-home" class="hidden">
+      <div class="panel">
+        <p class="panel-desc" id="home-greeting">Welcome back.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Team power</div><div class="stat-value" id="home-power">--</div></div>
+          <div class="stat"><div class="stat-label">Record</div><div class="stat-value" id="home-record">0-0</div></div>
+          <div class="stat"><div class="stat-label">Coins</div><div class="stat-value" id="home-coins">0</div></div>
+        </div>
+        <button class="btn btn-primary" id="btn-goto-builder">Open team builder</button>
+      </div>
+ 
+      <div class="mode-grid">
+        <button class="mode-card" id="mode-quick">
+          <span class="mode-icon">🏀</span>
+          <h3>Quick match</h3>
+          <p>Roll one CPU opponent and play a single full game right now.</p>
+        </button>
+        <button class="mode-card" id="mode-custom">
+          <span class="mode-icon">🎯</span>
+          <h3>Custom match</h3>
+          <p>Pick a size — 1v1 up to 5v5 — roll both squads, and play to 21.</p>
+        </button>
+        <button class="mode-card" id="mode-ladder">
+          <span class="mode-icon">🔥</span>
+          <h3>Streetball ladder</h3>
+          <p>Roll one player each round and climb from 1v1 all the way to 5v5.</p>
+        </button>
+        <button class="mode-card" id="mode-season">
+          <span class="mode-icon">📅</span>
+          <h3>Season</h3>
+          <p>Play a 10-game regular season as an NBA franchise, then fight for a title.</p>
+        </button>
+        <button class="mode-card" id="mode-tournament">
+          <span class="mode-icon">🏆</span>
+          <h3>Tournament</h3>
+          <p>Skip straight to a single-elimination bracket: quarterfinal, semifinal, final.</p>
+        </button>
+        <button class="mode-card" id="mode-trade">
+          <span class="mode-icon">🤝</span>
+          <h3>Trade center</h3>
+          <p>Offer and accept player trades with other coaches' accounts.</p>
+        </button>
+      </div>
+    </section>
+ 
+    <!-- ============ TEAM BUILDER ============ -->
+    <section id="screen-builder" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Team builder</h2>
+        <p class="panel-desc">Roll for each position. Better players are rarer — see the odds below. Empty slots roll for free; replacing a filled slot costs coins.</p>
+        <div class="field" style="max-width:280px;">
+          <label for="franchise-select">Playing as (your franchise vs. other NBA teams)</label>
+          <select id="franchise-select"></select>
+        </div>
+        <div class="builder-actions">
+          <button class="btn btn-primary btn-sm" id="btn-autofill">Auto-fill empty slots</button>
+          <button class="btn btn-sm" id="btn-odds">Odds</button>
+          <button class="btn btn-ghost btn-sm" id="btn-reset-team">Reset team</button>
+        </div>
+        <p class="builder-power">Team power: <b id="builder-power">--</b></p>
+      </div>
+ 
+      <div class="panel hidden" id="odds-panel">
+        <h3 class="panel-title" style="font-size:16px;">Roll odds</h3>
+        <p class="panel-desc">Every roll picks a rarity tier first, then a random player from that tier at the position you rolled.</p>
+        <div id="odds-table"></div>
+      </div>
+ 
+      <p class="slot-group-label">Starters</p>
+      <div class="slot-grid" id="starter-slots"></div>
+ 
+      <p class="slot-group-label">Bench</p>
+      <div class="slot-grid" id="bench-slots"></div>
+    </section>
+ 
+    <!-- ============ MATCH / SIMULATION ============ -->
+    <section id="screen-match" class="hidden">
+      <div class="panel" id="match-preview-panel">
+        <h2 class="panel-title" id="match-title">Quick match</h2>
+        <div class="matchup-preview">
+          <div class="matchup-card">
+            <div class="mc-label" id="match-my-name">Your team</div>
+            <div class="mc-power" id="match-my-power">--</div>
+          </div>
+          <div class="score-vs">VS</div>
+          <div class="matchup-card">
+            <div class="mc-label" id="match-cpu-name">Opponent</div>
+            <div class="mc-power" id="match-cpu-power">--</div>
+          </div>
+        </div>
+        <button class="btn btn-live btn-block" id="btn-play-game">Tip off</button>
+      </div>
+ 
+      <div class="panel hidden" id="match-live-panel">
+        <div class="scoreboard">
+          <div class="score-side">
+            <div class="team-name" id="live-my-name">You</div>
+            <div class="score-num" id="live-my-score">0</div>
+          </div>
+          <div class="score-vs">–</div>
+          <div class="score-side">
+            <div class="team-name" id="live-cpu-name">CPU</div>
+            <div class="score-num" id="live-cpu-score">0</div>
+          </div>
+        </div>
+        <div class="quarter-label" id="live-quarter">Quarter 1</div>
+        <div class="pbp-log" id="pbp-log"></div>
+        <button class="btn btn-ghost btn-sm" id="btn-skip-sim" style="margin-top:12px;">Skip to result</button>
+      </div>
+ 
+      <div class="panel hidden" id="match-result-panel">
+        <div class="result-banner" id="result-banner"></div>
+        <div class="reward-line" id="result-reward"></div>
+        <button class="btn btn-primary btn-block" id="btn-match-continue">Continue</button>
+      </div>
+    </section>
+ 
+    <!-- ============ SEASON ============ -->
+    <section id="screen-season" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Season</h2>
+        <div class="season-status" id="season-status"></div>
+        <div class="season-track" id="season-track"></div>
+        <button class="btn btn-live" id="btn-season-play">Play next game</button>
+        <button class="btn btn-ghost btn-sm" id="btn-season-new">Start new season</button>
+      </div>
+      <div class="panel hidden" id="season-bracket-panel">
+        <h2 class="panel-title">Playoffs</h2>
+        <div class="bracket" id="season-bracket"></div>
+      </div>
+    </section>
+ 
+    <!-- ============ TOURNAMENT ============ -->
+    <section id="screen-tournament" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Tournament</h2>
+        <div class="season-status" id="tourney-status"></div>
+        <div class="bracket" id="tourney-bracket"></div>
+        <button class="btn btn-live" id="btn-tourney-play">Play next round</button>
+        <button class="btn btn-ghost btn-sm" id="btn-tourney-new">Start new tournament</button>
+      </div>
+    </section>
+ 
+  </main>
+ 
+  <nav class="bottomnav hidden" id="bottomnav">
+    <button data-screen="home" class="nav-btn"><span class="nav-icon">🏠</span>Home</button>
+    <button data-screen="builder" class="nav-btn"><span class="nav-icon">🎲</span>Builder</button>
+    <button data-screen="season" class="nav-btn"><span class="nav-icon">📅</span>Season</button>
+    <button data-screen="tournament" class="nav-btn"><span class="nav-icon">🏆</span>Bracket</button>
+  </nav>
+ 
+</div>
+ 
