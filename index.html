@@ -1,4 +1,5 @@
 
+Markup · HTML
 <div id="app">
  
   <header class="topbar">
@@ -104,23 +105,26 @@
     <!-- ============ TEAM BUILDER ============ -->
     <section id="screen-builder" class="hidden">
       <div class="panel">
-        <h2 class="panel-title">Team builder</h2>
-        <p class="panel-desc">Roll for each position. Better players are rarer — see the odds below. Empty slots roll for free; replacing a filled slot costs coins.</p>
+        <h2 class="panel-title">Fantasy Mode — Team Builder</h2>
+        <p class="panel-desc">Roll for each position. Better players are rarer — see the odds below. Players you roll here join your permanent collection: they earn Rep Points (RP) and are the only players you can trade. Empty slots roll for free; replacing a filled slot costs coins.</p>
         <div class="field" style="max-width:280px;">
           <label for="franchise-select">Playing as (your franchise vs. other NBA teams)</label>
           <select id="franchise-select"></select>
         </div>
         <div class="builder-actions">
           <button class="btn btn-primary btn-sm" id="btn-autofill">Auto-fill empty slots</button>
-          <button class="btn btn-sm" id="btn-odds">Odds</button>
+          <button class="btn btn-sm" id="btn-odds">Odds &amp; RP</button>
           <button class="btn btn-ghost btn-sm" id="btn-reset-team">Reset team</button>
         </div>
-        <p class="builder-power">Team power: <b id="builder-power">--</b></p>
+        <div class="stat-row" style="margin-bottom:0;">
+          <div class="stat"><div class="stat-label">Team power</div><div class="stat-value" id="builder-power">--</div></div>
+          <div class="stat"><div class="stat-label">Roster value</div><div class="stat-value" id="builder-rp">0 <span style="font-size:13px;color:var(--paper-dim);">RP</span></div></div>
+        </div>
       </div>
  
       <div class="panel hidden" id="odds-panel">
-        <h3 class="panel-title" style="font-size:16px;">Roll odds</h3>
-        <p class="panel-desc">Every roll picks a rarity tier first, then a random player from that tier at the position you rolled.</p>
+        <h3 class="panel-title" style="font-size:16px;">Roll odds &amp; Rep Points</h3>
+        <p class="panel-desc">Every roll picks a rarity tier first, then a random player from that tier — you'll see which NBA team they're on as the card reveals.</p>
         <div id="odds-table"></div>
       </div>
  
@@ -199,13 +203,77 @@
       </div>
     </section>
  
+    <!-- ============ CUSTOM MATCH ============ -->
+    <section id="screen-custom" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Custom match</h2>
+        <p class="panel-desc">Pick a size, roll both squads from anywhere in the league, then play head-to-head to 21. These rolls are just for this game — they don't join your Fantasy Mode collection or earn RP.</p>
+        <div class="builder-actions" id="custom-size-picker"></div>
+        <button class="btn btn-primary" id="btn-custom-roll">Roll both squads</button>
+      </div>
+      <div class="panel hidden" id="custom-squads-panel">
+        <div class="slot-group-label">Your squad</div>
+        <div class="slot-grid" id="custom-my-squad"></div>
+        <div class="slot-group-label">Opponent squad</div>
+        <div class="slot-grid" id="custom-cpu-squad"></div>
+        <button class="btn btn-live" id="btn-custom-play" style="margin-top:14px;">Play to 21</button>
+      </div>
+    </section>
+ 
+    <!-- ============ STREETBALL LADDER ============ -->
+    <section id="screen-ladder" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Streetball ladder</h2>
+        <p class="panel-desc">Roll one player per round, then play to 21. Win and you add another player and raise the stakes: 1v1 → 2v2 → 3v3 → 4v4 → 5v5. These rolls are session-only — no RP, no trading.</p>
+        <div class="season-status" id="ladder-status"></div>
+        <div class="season-track" id="ladder-track"></div>
+        <button class="btn btn-live" id="btn-ladder-roll">Roll next player</button>
+        <button class="btn btn-ghost btn-sm" id="btn-ladder-new">Start new run</button>
+      </div>
+      <div class="panel hidden" id="ladder-squads-panel">
+        <div class="slot-group-label">Your squad</div>
+        <div class="slot-grid" id="ladder-my-squad"></div>
+        <div class="slot-group-label">Opponent squad</div>
+        <div class="slot-grid" id="ladder-cpu-squad"></div>
+        <button class="btn btn-live" id="btn-ladder-play" style="margin-top:14px;">Play this round to 21</button>
+      </div>
+    </section>
+ 
+    <!-- ============ TRADE CENTER ============ -->
+    <section id="screen-trade" class="hidden">
+      <div class="panel hidden" id="trade-unavailable">
+        <h2 class="panel-title">Trade center</h2>
+        <p class="panel-desc">Trading with other coaches needs the deployed Apps Script version, since it uses your shared account database. This preview only saves to your own browser, so there's no one else to trade with here.</p>
+      </div>
+      <div class="panel" id="trade-panel">
+        <h2 class="panel-title">Trade center</h2>
+        <p class="panel-desc">Only players from your Fantasy Mode collection can be traded. Offer one of yours for one of theirs — they can accept or reject anytime.</p>
+        <div class="field">
+          <label for="trade-user-select">Trade with</label>
+          <select id="trade-user-select"></select>
+        </div>
+        <div id="trade-builder"></div>
+        <button class="btn btn-primary" id="btn-propose-trade">Send trade offer</button>
+        <p class="panel-desc" id="trade-propose-msg"></p>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title" style="font-size:16px;">Incoming offers</h3>
+        <div id="trade-incoming"></div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title" style="font-size:16px;">Your outgoing offers</h3>
+        <div id="trade-outgoing"></div>
+      </div>
+    </section>
+ 
   </main>
  
   <nav class="bottomnav hidden" id="bottomnav">
     <button data-screen="home" class="nav-btn"><span class="nav-icon">🏠</span>Home</button>
-    <button data-screen="builder" class="nav-btn"><span class="nav-icon">🎲</span>Builder</button>
+    <button data-screen="builder" class="nav-btn"><span class="nav-icon">🎲</span>Fantasy</button>
     <button data-screen="season" class="nav-btn"><span class="nav-icon">📅</span>Season</button>
     <button data-screen="tournament" class="nav-btn"><span class="nav-icon">🏆</span>Bracket</button>
+    <button data-screen="trade" class="nav-btn"><span class="nav-icon">🤝</span>Trade</button>
   </nav>
  
 </div>
