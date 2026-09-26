@@ -1,132 +1,311 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Court Kings - Basketball Management</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Main App Container -->
-    <div id="court-kings-app">
-        
-        <!-- HEADER -->
-        <header class="game-header">
-            <div class="header-logo">
-                <h1>Court Kings 👑</h1>
-                <p>Build your dynasty. Dominate the court.</p>
-            </div>
-            <nav class="header-nav">
-                <button id="nav-roster" class="nav-btn active">Roster</button>
-                <button id="nav-sim" class="nav-btn">Play</button>
-                <button id="nav-trade" class="nav-btn">Trade Block</button>
-            </nav>
-        </header>
+<div id="app">
 
-        <!-- TOP BAR: CURRENCY & DRAFT ACTIONS -->
-        <div class="dashboard-controls">
-            <div class="stats-panel">
-                <div class="stat-box">
-                    <span class="stat-label">Franchise Funds</span>
-                    <span id="coin-display" class="stat-value text-gold">1000 🪙</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Team OVR</span>
-                    <span id="team-ovr-display" class="stat-value">0</span>
-                </div>
-            </div>
-            <div class="draft-panel">
-                <button id="roll-btn" class="action-btn primary-btn">Draft Player (100 🪙)</button>
-            </div>
-        </div>
-
-        <!-- DRAFT REVEAL AREA -->
-        <div id="player-reveal-container" class="hidden">
-            <div class="reveal-content">
-                <h2 id="player-reveal-text">Scouting prospects...</h2>
-                <div id="player-reveal-card" class="player-card hidden">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- MAIN WORKSPACE -->
-        <main class="game-workspace">
-            
-            <!-- VIEW: ROSTER MANAGEMENT -->
-            <section id="view-roster" class="workspace-view active-view">
-                <div class="section-header">
-                    <h2>Active Roster</h2>
-                    <div class="roster-filters">
-                        <select id="filter-pos">
-                            <option value="ALL">All Positions</option>
-                            <option value="PG">Point Guards</option>
-                            <option value="SG">Shooting Guards</option>
-                            <option value="SF">Small Forwards</option>
-                            <option value="PF">Power Forwards</option>
-                            <option value="C">Centers</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="roster-grid" id="roster-container">
-                    <div class="empty-state">
-                        <p>Your roster is empty. Hit the Draft button to sign your first player.</p>
-                    </div>
-                    <!-- Player Cards inserted here -->
-                </div>
-            </section>
-
-            <!-- VIEW: SIMULATION ENGINE -->
-            <section id="view-sim" class="workspace-view hidden">
-                <div class="sim-layout">
-                    <!-- Matchup Setup -->
-                    <div class="matchup-panel">
-                        <h2>Next Game</h2>
-                        <div class="opponent-selector">
-                            <label for="opponent-select">Select Opponent:</label>
-                            <select id="opponent-select">
-                                <!-- Populated by JS Data Seed -->
-                            </select>
-                        </div>
-                        <div class="matchup-preview">
-                            <div class="team-preview user-preview">
-                                <h3>Your Team</h3>
-                                <span id="preview-user-ovr" class="preview-ovr">0 OVR</span>
-                            </div>
-                            <div class="vs-badge">VS</div>
-                            <div class="team-preview opp-preview">
-                                <h3 id="preview-opp-name">Select Team</h3>
-                                <span id="preview-opp-ovr" class="preview-ovr">0 OVR</span>
-                            </div>
-                        </div>
-                        <button id="sim-game-btn" class="action-btn sim-btn" disabled>Simulate Match</button>
-                    </div>
-
-                    <!-- Live Play-by-Play -->
-                    <div class="simulation-panel">
-                        <div class="scoreboard">
-                            <div class="score-box">
-                                <span class="team-name">USER</span>
-                                <span id="home-score" class="score-num">0</span>
-                            </div>
-                            <div class="game-clock" id="game-clock">Q1 12:00</div>
-                            <div class="score-box">
-                                <span class="team-name">OPP</span>
-                                <span id="away-score" class="score-num">0</span>
-                            </div>
-                        </div>
-                        <div class="ticker-container">
-                            <ul id="play-by-play-log">
-                                <li class="log-event system-msg">Awaiting tip-off...</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </main>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">COURT <span>KINGS</span></span>
     </div>
-    
-    <script src="game.js"></script>
-</body>
-</html>
+    <div class="topbar-right hidden" id="topbar-user">
+      <span>🪙 <span class="coin" id="topbar-coins">0</span></span>
+      <span id="topbar-record">0-0</span>
+      <button class="linklike" id="btn-logout">Log out</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ AUTH SCREEN ============ -->
+    <section id="screen-auth">
+      <div class="auth-wrap">
+        <span class="brand-mark">COURT <span>KINGS</span></span>
+        <span class="brand-sub">Roll your dynasty, one player at a time.</span>
+
+        <div id="auth-message"></div>
+
+        <form id="form-login">
+          <div class="field">
+            <label for="login-username">Coach name</label>
+            <input id="login-username" autocomplete="username" required maxlength="24">
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-login">Log in</button>
+        </form>
+
+        <form id="form-register" class="hidden">
+          <div class="field">
+            <label for="reg-username">Choose a coach name</label>
+            <input id="reg-username" autocomplete="username" required maxlength="24" minlength="3">
+          </div>
+          <div class="field">
+            <label for="reg-password">Choose a password</label>
+            <input id="reg-password" type="password" autocomplete="new-password" required minlength="4">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-register">Create account</button>
+        </form>
+
+        <div class="auth-toggle">
+          <span id="auth-toggle-text">New here?</span>
+          <button type="button" id="btn-toggle-auth">Create an account</button>
+        </div>
+
+        <div class="auth-note" id="auth-note"></div>
+      </div>
+    </section>
+
+    <!-- ============ HOME / DASHBOARD ============ -->
+    <section id="screen-home" class="hidden">
+      <div class="panel">
+        <p class="panel-desc" id="home-greeting">Welcome back.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Team power</div><div class="stat-value" id="home-power">--</div></div>
+          <div class="stat"><div class="stat-label">Record</div><div class="stat-value" id="home-record">0-0</div></div>
+          <div class="stat"><div class="stat-label">Coins</div><div class="stat-value" id="home-coins">0</div></div>
+        </div>
+        <button class="btn btn-primary" id="btn-goto-builder">Open team builder</button>
+      </div>
+
+      <div class="mode-grid">
+        <button class="mode-card" id="mode-quick">
+          <span class="mode-icon">🏀</span>
+          <h3>Quick match</h3>
+          <p>Roll one CPU opponent and play a single full game right now.</p>
+        </button>
+        <button class="mode-card" id="mode-custom">
+          <span class="mode-icon">🎯</span>
+          <h3>Custom match</h3>
+          <p>Pick a size — 1v1 up to 5v5 — roll both squads, and play to 21.</p>
+        </button>
+        <button class="mode-card" id="mode-ladder">
+          <span class="mode-icon">🔥</span>
+          <h3>Streetball ladder</h3>
+          <p>Roll one player each round and climb from 1v1 all the way to 5v5.</p>
+        </button>
+        <button class="mode-card" id="mode-season">
+          <span class="mode-icon">📅</span>
+          <h3>Season</h3>
+          <p>Play a 10-game regular season as an NBA franchise, then fight for a title.</p>
+        </button>
+        <button class="mode-card" id="mode-tournament">
+          <span class="mode-icon">🏆</span>
+          <h3>Tournament</h3>
+          <p>Skip straight to a single-elimination bracket: quarterfinal, semifinal, final.</p>
+        </button>
+        <button class="mode-card" id="mode-tradeblock">
+          <span class="mode-icon">♻️</span>
+          <h3>Trade block</h3>
+          <p>Trade in 5 Common players for a guaranteed Uncommon+ upgrade.</p>
+        </button>
+        <button class="mode-card" id="mode-trade">
+          <span class="mode-icon">🤝</span>
+          <h3>Trade center</h3>
+          <p>Offer and accept player trades with other coaches' accounts.</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ TEAM BUILDER ============ -->
+    <section id="screen-builder" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Fantasy Mode — Team Builder</h2>
+        <p class="panel-desc">Roll for each position. Better players are rarer — see the odds below. Players you roll here join your permanent collection: they earn Rep Points (RP) and are the only players you can trade. Empty slots roll for free; replacing a filled slot costs coins.</p>
+        <div class="field" style="max-width:280px;">
+          <label for="franchise-select">Playing as (your franchise vs. other NBA teams)</label>
+          <select id="franchise-select"></select>
+        </div>
+        <div class="builder-actions">
+          <button class="btn btn-primary btn-sm" id="btn-autofill">Auto-fill empty slots</button>
+          <button class="btn btn-sm" id="btn-odds">Odds &amp; RP</button>
+          <button class="btn btn-ghost btn-sm" id="btn-reset-team">Reset team</button>
+        </div>
+        <div class="stat-row" style="margin-bottom:0;">
+          <div class="stat"><div class="stat-label">Team power</div><div class="stat-value" id="builder-power">--</div></div>
+          <div class="stat"><div class="stat-label">Roster value</div><div class="stat-value" id="builder-rp">0 <span style="font-size:13px;color:var(--paper-dim);">RP</span></div></div>
+        </div>
+      </div>
+
+      <div class="panel hidden" id="odds-panel">
+        <h3 class="panel-title" style="font-size:16px;">Roll odds &amp; Rep Points</h3>
+        <p class="panel-desc">Every roll picks a rarity tier first, then a random player from that tier — you'll see which NBA team they're on as the card reveals.</p>
+        <div id="odds-table"></div>
+      </div>
+
+      <p class="slot-group-label">Starters</p>
+      <div class="slot-grid" id="starter-slots"></div>
+
+      <p class="slot-group-label">Bench</p>
+      <div class="slot-grid" id="bench-slots"></div>
+    </section>
+
+    <!-- ============ TRADE BLOCK SCREEN ============ -->
+    <section id="screen-tradeblock" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">The Trade Block</h2>
+        <p class="panel-desc">Trade in 5 Common players to empty their roster slots and receive 1 guaranteed Uncommon (or better) player at your chosen position.</p>
+        
+        <div id="tradeblock-selection" class="slot-grid">
+          <!-- JS populates Common players here -->
+        </div>
+        
+        <div class="tradeblock-controls">
+          <div class="field" style="margin-bottom:0; min-width:180px;">
+            <label for="tradeblock-reward-pos">Select Reward Position</label>
+            <select id="tradeblock-reward-pos" class="select-input">
+              <option value="PG">Point Guard (PG)</option>
+              <option value="SG">Shooting Guard (SG)</option>
+              <option value="SF">Small Forward (SF)</option>
+              <option value="PF">Power Forward (PF)</option>
+              <option value="C">Center (C)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-execute-trade" disabled>
+            Trade 5 Players (<span id="tradeblock-count">0</span>/5 selected)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MATCH / SIMULATION ============ -->
+    <section id="screen-match" class="hidden">
+      <div class="panel" id="match-preview-panel">
+        <h2 class="panel-title" id="match-title">Quick match</h2>
+        <div class="matchup-preview">
+          <div class="matchup-card">
+            <div class="mc-label" id="match-my-name">Your team</div>
+            <div class="mc-power" id="match-my-power">--</div>
+          </div>
+          <div class="score-vs">VS</div>
+          <div class="matchup-card">
+            <div class="mc-label" id="match-cpu-name">Opponent</div>
+            <div class="mc-power" id="match-cpu-power">--</div>
+          </div>
+        </div>
+        <button class="btn btn-live btn-block" id="btn-play-game">Tip off</button>
+      </div>
+
+      <div class="panel hidden" id="match-live-panel">
+        <div class="scoreboard">
+          <div class="score-side">
+            <div class="team-name" id="live-my-name">You</div>
+            <div class="score-num" id="live-my-score">0</div>
+          </div>
+          <div class="score-vs">–</div>
+          <div class="score-side">
+            <div class="team-name" id="live-cpu-name">CPU</div>
+            <div class="score-num" id="live-cpu-score">0</div>
+          </div>
+        </div>
+        <div class="quarter-label" id="live-quarter">Quarter 1</div>
+        <div class="pbp-log" id="pbp-log"></div>
+        <button class="btn btn-ghost btn-sm" id="btn-skip-sim" style="margin-top:12px;">Skip to result</button>
+      </div>
+
+      <div class="panel hidden" id="match-result-panel">
+        <div class="result-banner" id="result-banner"></div>
+        <div class="reward-line" id="result-reward"></div>
+        <button class="btn btn-primary btn-block" id="btn-match-continue">Continue</button>
+      </div>
+    </section>
+
+    <!-- ============ SEASON ============ -->
+    <section id="screen-season" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Season</h2>
+        <div class="season-status" id="season-status"></div>
+        <div class="season-track" id="season-track"></div>
+        <button class="btn btn-live" id="btn-season-play">Play next game</button>
+        <button class="btn btn-ghost btn-sm" id="btn-season-new">Start new season</button>
+      </div>
+      <div class="panel hidden" id="season-bracket-panel">
+        <h2 class="panel-title">Playoffs</h2>
+        <div class="bracket" id="season-bracket"></div>
+      </div>
+    </section>
+
+    <!-- ============ TOURNAMENT ============ -->
+    <section id="screen-tournament" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Tournament</h2>
+        <div class="season-status" id="tourney-status"></div>
+        <div class="bracket" id="tourney-bracket"></div>
+        <button class="btn btn-live" id="btn-tourney-play">Play next round</button>
+        <button class="btn btn-ghost btn-sm" id="btn-tourney-new">Start new tournament</button>
+      </div>
+    </section>
+
+    <!-- ============ CUSTOM MATCH ============ -->
+    <section id="screen-custom" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Custom match</h2>
+        <p class="panel-desc">Pick a size, roll both squads from anywhere in the league, then play head-to-head to 21. These rolls are just for this game — they don't join your Fantasy Mode collection or earn RP.</p>
+        <div class="builder-actions" id="custom-size-picker"></div>
+        <button class="btn btn-primary" id="btn-custom-roll">Roll both squads</button>
+      </div>
+      <div class="panel hidden" id="custom-squads-panel">
+        <div class="slot-group-label">Your squad</div>
+        <div class="slot-grid" id="custom-my-squad"></div>
+        <div class="slot-group-label">Opponent squad</div>
+        <div class="slot-grid" id="custom-cpu-squad"></div>
+        <button class="btn btn-live" id="btn-custom-play" style="margin-top:14px;">Play to 21</button>
+      </div>
+    </section>
+
+    <!-- ============ STREETBALL LADDER ============ -->
+    <section id="screen-ladder" class="hidden">
+      <div class="panel">
+        <h2 class="panel-title">Streetball ladder</h2>
+        <p class="panel-desc">Roll one player per round, then play to 21. Win and you add another player and raise the stakes: 1v1 → 2v2 → 3v3 → 4v4 → 5v5. These rolls are session-only — no RP, no trading.</p>
+        <div class="season-status" id="ladder-status"></div>
+        <div class="season-track" id="ladder-track"></div>
+        <button class="btn btn-live" id="btn-ladder-roll">Roll next player</button>
+        <button class="btn btn-ghost btn-sm" id="btn-ladder-new">Start new run</button>
+      </div>
+      <div class="panel hidden" id="ladder-squads-panel">
+        <div class="slot-group-label">Your squad</div>
+        <div class="slot-grid" id="ladder-my-squad"></div>
+        <div class="slot-group-label">Opponent squad</div>
+        <div class="slot-grid" id="ladder-cpu-squad"></div>
+        <button class="btn btn-live" id="btn-ladder-play" style="margin-top:14px;">Play this round to 21</button>
+      </div>
+    </section>
+
+    <!-- ============ TRADE CENTER ============ -->
+    <section id="screen-trade" class="hidden">
+      <div class="panel hidden" id="trade-unavailable">
+        <h2 class="panel-title">Trade center</h2>
+        <p class="panel-desc">Trading with other coaches needs the deployed Apps Script version, since it uses your shared account database. This preview only saves to your own browser, so there's no one else to trade with here.</p>
+      </div>
+      <div class="panel" id="trade-panel">
+        <h2 class="panel-title">Trade center</h2>
+        <p class="panel-desc">Only players from your Fantasy Mode collection can be traded. Offer one of yours for one of theirs — they can accept or reject anytime.</p>
+        <div class="field">
+          <label for="trade-user-select">Trade with</label>
+          <select id="trade-user-select"></select>
+        </div>
+        <div id="trade-builder"></div>
+        <button class="btn btn-primary" id="btn-propose-trade">Send trade offer</button>
+        <p class="panel-desc" id="trade-propose-msg"></p>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title" style="font-size:16px;">Incoming offers</h3>
+        <div id="trade-incoming"></div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title" style="font-size:16px;">Your outgoing offers</h3>
+        <div id="trade-outgoing"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="bottomnav hidden" id="bottomnav">
+    <button data-screen="home" class="nav-btn"><span class="nav-icon">🏠</span>Home</button>
+    <button data-screen="builder" class="nav-btn"><span class="nav-icon">🎲</span>Fantasy</button>
+    <button data-screen="tradeblock" class="nav-btn"><span class="nav-icon">♻️</span>Recycle</button>
+    <button data-screen="season" class="nav-btn"><span class="nav-icon">📅</span>Season</button>
+    <button data-screen="tournament" class="nav-btn"><span class="nav-icon">🏆</span>Bracket</button>
+    <button data-screen="trade" class="nav-btn"><span class="nav-icon">🤝</span>Trade</button>
+  </nav>
+
+</div>
