@@ -1,5 +1,5 @@
 <div id="app">
-
+ 
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark">COURT <span>KINGS</span></span>
@@ -10,17 +10,17 @@
       <button class="linklike" id="btn-logout">Log out</button>
     </div>
   </header>
-
+ 
   <main>
-
+ 
     <!-- ============ AUTH SCREEN ============ -->
     <section id="screen-auth">
       <div class="auth-wrap">
         <span class="brand-mark">COURT <span>KINGS</span></span>
         <span class="brand-sub">Roll your dynasty, one player at a time.</span>
-
+ 
         <div id="auth-message"></div>
-
+ 
         <form id="form-login">
           <div class="field">
             <label for="login-username">Coach name</label>
@@ -32,7 +32,7 @@
           </div>
           <button type="submit" class="btn btn-primary btn-block" id="btn-login">Log in</button>
         </form>
-
+ 
         <form id="form-register" class="hidden">
           <div class="field">
             <label for="reg-username">Choose a coach name</label>
@@ -44,16 +44,16 @@
           </div>
           <button type="submit" class="btn btn-primary btn-block" id="btn-register">Create account</button>
         </form>
-
+ 
         <div class="auth-toggle">
           <span id="auth-toggle-text">New here?</span>
           <button type="button" id="btn-toggle-auth">Create an account</button>
         </div>
-
+ 
         <div class="auth-note" id="auth-note"></div>
       </div>
     </section>
-
+ 
     <!-- ============ HOME / DASHBOARD ============ -->
     <section id="screen-home" class="hidden">
       <div class="panel">
@@ -65,7 +65,7 @@
         </div>
         <button class="btn btn-primary" id="btn-goto-builder">Open team builder</button>
       </div>
-
+ 
       <div class="mode-grid">
         <button class="mode-card" id="mode-quick">
           <span class="mode-icon">🏀</span>
@@ -104,7 +104,7 @@
         </button>
       </div>
     </section>
-
+ 
     <!-- ============ TEAM BUILDER ============ -->
     <section id="screen-builder" class="hidden">
       <div class="panel">
@@ -124,16 +124,16 @@
           <div class="stat"><div class="stat-label">Roster value</div><div class="stat-value" id="builder-rp">0 <span style="font-size:13px;color:var(--paper-dim);">RP</span></div></div>
         </div>
       </div>
-
+ 
       <div class="panel hidden" id="odds-panel">
         <h3 class="panel-title" style="font-size:16px;">Roll odds &amp; Rep Points</h3>
         <p class="panel-desc">Every roll picks a rarity tier first, then a random player from that tier — you'll see which NBA team they're on as the card reveals.</p>
         <div id="odds-table"></div>
       </div>
-
+ 
       <p class="slot-group-label">Starters</p>
       <div class="slot-grid" id="starter-slots"></div>
-
+ 
       <p class="slot-group-label">Bench</p>
       <div class="slot-grid" id="bench-slots"></div>
     </section>
@@ -148,10 +148,10 @@
           <!-- JS populates Common players here -->
         </div>
         
-        <div class="tradeblock-controls">
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap;">
           <div class="field" style="margin-bottom:0; min-width:180px;">
             <label for="tradeblock-reward-pos">Select Reward Position</label>
-            <select id="tradeblock-reward-pos" class="select-input">
+            <select id="tradeblock-reward-pos" style="width: 100%; padding: 8px; border-radius: 4px; background: var(--ink); color: var(--paper); border: 1px solid var(--line-bright);">
               <option value="PG">Point Guard (PG)</option>
               <option value="SG">Shooting Guard (SG)</option>
               <option value="SF">Small Forward (SF)</option>
@@ -165,7 +165,7 @@
         </div>
       </div>
     </section>
-
+ 
     <!-- ============ MATCH / SIMULATION ============ -->
     <section id="screen-match" class="hidden">
       <div class="panel" id="match-preview-panel">
@@ -183,7 +183,7 @@
         </div>
         <button class="btn btn-live btn-block" id="btn-play-game">Tip off</button>
       </div>
-
+ 
       <div class="panel hidden" id="match-live-panel">
         <div class="scoreboard">
           <div class="score-side">
@@ -200,14 +200,14 @@
         <div class="pbp-log" id="pbp-log"></div>
         <button class="btn btn-ghost btn-sm" id="btn-skip-sim" style="margin-top:12px;">Skip to result</button>
       </div>
-
+ 
       <div class="panel hidden" id="match-result-panel">
         <div class="result-banner" id="result-banner"></div>
         <div class="reward-line" id="result-reward"></div>
         <button class="btn btn-primary btn-block" id="btn-match-continue">Continue</button>
       </div>
     </section>
-
+ 
     <!-- ============ SEASON ============ -->
     <section id="screen-season" class="hidden">
       <div class="panel">
@@ -222,7 +222,7 @@
         <div class="bracket" id="season-bracket"></div>
       </div>
     </section>
-
+ 
     <!-- ============ TOURNAMENT ============ -->
     <section id="screen-tournament" class="hidden">
       <div class="panel">
@@ -233,7 +233,7 @@
         <button class="btn btn-ghost btn-sm" id="btn-tourney-new">Start new tournament</button>
       </div>
     </section>
-
+ 
     <!-- ============ CUSTOM MATCH ============ -->
     <section id="screen-custom" class="hidden">
       <div class="panel">
@@ -250,7 +250,7 @@
         <button class="btn btn-live" id="btn-custom-play" style="margin-top:14px;">Play to 21</button>
       </div>
     </section>
-
+ 
     <!-- ============ STREETBALL LADDER ============ -->
     <section id="screen-ladder" class="hidden">
       <div class="panel">
@@ -269,7 +269,7 @@
         <button class="btn btn-live" id="btn-ladder-play" style="margin-top:14px;">Play this round to 21</button>
       </div>
     </section>
-
+ 
     <!-- ============ TRADE CENTER ============ -->
     <section id="screen-trade" class="hidden">
       <div class="panel hidden" id="trade-unavailable">
@@ -296,9 +296,9 @@
         <div id="trade-outgoing"></div>
       </div>
     </section>
-
+ 
   </main>
-
+ 
   <nav class="bottomnav hidden" id="bottomnav">
     <button data-screen="home" class="nav-btn"><span class="nav-icon">🏠</span>Home</button>
     <button data-screen="builder" class="nav-btn"><span class="nav-icon">🎲</span>Fantasy</button>
@@ -307,5 +307,5 @@
     <button data-screen="tournament" class="nav-btn"><span class="nav-icon">🏆</span>Bracket</button>
     <button data-screen="trade" class="nav-btn"><span class="nav-icon">🤝</span>Trade</button>
   </nav>
-
+ 
 </div>
