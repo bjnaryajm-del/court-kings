@@ -232,3 +232,49 @@ main{ flex:1; padding:18px; padding-bottom:90px; }
   .slot-grid{ grid-template-columns:repeat(2, 1fr); }
 }
  
+/* ---------- Holographic Foil Effect ---------- */
+.slot.filled.tier-epic, .slot.filled.tier-legendary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Create the gradient overlay */
+.slot.filled.tier-epic::after, .slot.filled.tier-legendary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.4) 30%,
+    rgba(255, 255, 255, 0.0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.0) 60%,
+    transparent 80%
+  );
+  transform: rotate(25deg) translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: overlay;
+}
+
+/* Hover interactions */
+.slot.filled.tier-epic:hover, .slot.filled.tier-legendary:hover {
+  transform: translateY(-4px) scale(1.02);
+  z-index: 10;
+}
+
+.slot.filled.tier-epic:hover::after, .slot.filled.tier-legendary:hover::after {
+  opacity: 1;
+  animation: holoGleam 2.5s infinite linear;
+}
+
+@keyframes holoGleam {
+  0% { transform: rotate(25deg) translate(-50%, -50%); }
+  100% { transform: rotate(25deg) translate(50%, 50%); }
+}
